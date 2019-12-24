@@ -1,74 +1,60 @@
 <template>
   <div id="app">
-    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/vue-post-photo.jpg" class="main-photo">
-    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/vue-main-profile.jpg" class="main-profile">
+    <img
+      src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/vue-post-photo.jpg"
+      class="main-photo"
+    />
+    <img
+      src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/vue-main-profile.jpg"
+      class="main-profile"
+    />
     <div class="main-info">
-      <span class="name">Julianne Delfina</span> 
+      <span class="name">Julianne Delfina</span>
       <h3>"It's lovely after it rains"</h3>
     </div>
-    <hr>
+    <hr />
     <ul>
       <li
         is="individual-comment"
         v-for="comment in comments"
+        v-bind:key="comment.text"
         v-bind:commentpost="comment"
       ></li>
     </ul>
-    <input
-      v-model="newComment"
-      v-on:keyup.enter="addComment"
-      placeholder="Add a comment"
-    />
+    <input v-model="newComment" v-on:keyup.enter="addComment" placeholder="Add a comment" />
   </div>
 </template>
 
 <script>
-import IndividualComment from './components/IndividualComment.vue';
+import IndividualComment from "./components/IndividualComment.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     IndividualComment
   },
   data() {
     return {
-      newComment: '',
-      comments: [
-        { 
-          text: 'Looks great Julianne!',
-          author: 'Robin Rendle',
-          authorImg: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/v-coffee.jpg'
-        },
-        { 
-          text: 'I love the Sea',
-          author: 'Miriam Suzanne',
-          authorImg: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/v-miriam.jpg'
-        },
-        { 
-          text: 'Where are you?',
-          author: 'Geoff Graham',
-          authorImg: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/v-geoff.jpg'
-        }
-      ]
+      newComment: ""
+    };
+  },
+  computed: {
+    comments() {
+      return this.$store.state.comments;
     }
   },
   methods: {
-    addComment: function () {
-      const newCommentObj = {
-        text: this.newComment,
-        author: 'Magoo',
-        authorImg: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/28963/v-skull.jpg'
-      };
-      this.comments.push(newCommentObj);
-      this.newComment = '';
+    addComment: function() {
+      this.$store.commit("addComment", this.newComment);
+      this.newComment = "";
     }
   }
-}
+};
 </script>
 
 <style>
 body {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   background: #888;
 }
 
@@ -115,11 +101,12 @@ h3 {
   padding: 10px 20px;
   text-align: left;
   margin-bottom: 15px;
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+}
+
+.main-info:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 li {
@@ -142,7 +129,7 @@ hr {
 }
 
 input {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   width: 280px;
   margin: 30px 0;
   padding: 8px 10px;
@@ -159,5 +146,4 @@ input {
 .post-comment {
   margin: 0 0 5px 0;
 }
-
 </style>
